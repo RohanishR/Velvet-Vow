@@ -130,14 +130,10 @@ function selectCard(selected, type){
     }
 
     if(type === "events"){
-      panel.innerHTML = `
-        <h2>My Events</h2>
-        <ul>
-          <li>Wedding - 12 March 2026</li>
-          <li>Birthday Party - 28 April 2026</li>
-        </ul>
-      `;
-    }
+      loadEvents();
+      return;
+  }
+
 
     if(type === "nearby"){
       panel.innerHTML = `
@@ -158,4 +154,55 @@ function selectCard(selected, type){
     panel.classList.add("fade-in");
 
   },150);
+}
+
+async function loadEvents(){
+
+  const panel = document.getElementById("content-panel");
+
+  const res = await fetch("http://localhost:5000/api/events");
+  const events = await res.json();
+
+  let html = "<h2>My Events</h2>";
+
+  if(events.length === 0){
+    html += "<p>No events found.</p>";
+  }
+
+  events.forEach(event=>{
+    html += `
+      <div class="event-item">
+        <h4>${event.eventName}</h4>
+        <p>${event.type} | ${new Date(event.date).toDateString()}</p>
+        <button onclick="deleteEvent('${event._id}')">Delete</button>
+        <button onclick="editEvent('${event._id}','${event.eventName}')">Edit</button>
+      </div>
+    `;
+  });
+
+  panel.innerHTML = html;
+}
+
+async function deleteEvent(id){
+
+  await fetch(`http://localhost:5000/api/events/${id}`,{
+    method:"DELETE"
+  });
+
+  loadEvents();
+}
+
+async function editEvent(id, currentName){
+
+  const newName = prompt("Edit Event Name:", currentName);
+
+  if(!newName) return;
+
+  await fetch(`http://localhost:5000/api/events/${id}`,{
+    method:"PUT",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ eventName:newName })
+  });
+
+  loadEvents();
 }

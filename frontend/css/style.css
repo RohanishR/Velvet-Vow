@@ -754,3 +754,35 @@ body{
     margin-top:20px;
   }
 }
+
+.success-modal{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#4CAF50;
+  color:#fff;
+  padding:15px 25px;
+  border-radius:10px;
+  opacity:0;
+  transition:0.4s ease;
+}
+
+.success-modal.show{
+  opacity:1;
+}
+
+.success-modal{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#4CAF50;
+  color:#fff;
+  padding:15px 25px;
+  border-radius:10px;
+  opacity:0;
+  transition:0.4s ease;
+}
+
+.success-modal.show{
+  opacity:1;
+}
