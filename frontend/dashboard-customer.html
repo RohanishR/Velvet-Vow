@@ -19,25 +19,53 @@
 
 <section class="dashboard container">
 
-  <div class="dashboard-cards">
-    <div class="dash-card">
+  <div class="dashboard-grid">
+
+    <div class="add-event-card">
+      <div class="add-event-text">
+        <h2>Add Event</h2>
+        <p>Start planning your wedding or celebration with smart tools and real-time tracking.</p>
+        <a href="create-event.html" class="create-btn">
+      <i class="fas fa-plus-circle"></i> Create Event
+    </a>
+  </div>
+
+  <div class="add-event-icon">
+    <i class="fas fa-calendar-plus"></i>
+  </div>
+</div>
+
+
+    <div class="dash-card" onclick="selectCard(this, 'events')">
       <i class="fas fa-calendar-check"></i>
       <h3>My Events</h3>
       <p>View and manage your bookings</p>
     </div>
 
-    <div class="dash-card">
+    <div class="dash-card" onclick="selectCard(this, 'nearby')">
       <i class="fas fa-map-marker-alt"></i>
       <h3>Nearby Wedding Halls</h3>
       <p>Find venues near you</p>
     </div>
 
-    <div class="dash-card">
+    <div class="dash-card" onclick="selectCard(this, 'budget')">
       <i class="fas fa-wallet"></i>
       <h3>Budget Tracker</h3>
       <p>Track your event expenses</p>
     </div>
+
   </div>
+
+  <!-- Content Panel -->
+  <div id="content-panel" class="content-panel fade-in">
+    <h2>Add Event</h2>
+    <p>Create your new wedding or party event here.</p>
+  </div>
+
+</section>
+
+<script src="js/script.js"></script>
+
 
 </section>
 

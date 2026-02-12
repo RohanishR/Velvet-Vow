@@ -7,12 +7,21 @@ document.querySelectorAll("button").forEach(btn=>{
 });
 
 function openModal(){
-  document.getElementById("loginModal").style.display="flex";
+  const modal = document.getElementById("loginModal");
+  modal.classList.add("active");
+
+  // Disable scroll
+  document.body.style.overflow = "hidden";
 }
 
 function closeModal(){
-  document.getElementById("loginModal").style.display="none";
+  const modal = document.getElementById("loginModal");
+  modal.classList.remove("active");
+
+  // Enable scroll again
+  document.body.style.overflow = "auto";
 }
+
 
 /* Scroll Animation */
 const elements = document.querySelectorAll(".two-column, .feature-box");
@@ -89,3 +98,64 @@ function addNearbyEvents(lat, lon){
 window.onload = initMap;
 
 
+window.addEventListener("click", function(e){
+  const modal = document.getElementById("loginModal");
+  if(e.target === modal){
+    closeModal();
+  }
+});
+
+function selectCard(selected, type){
+
+  // Remove active class
+  document.querySelectorAll(".dash-card").forEach(card=>{
+    card.classList.remove("active");
+  });
+
+  selected.classList.add("active");
+
+  const panel = document.getElementById("content-panel");
+
+  panel.classList.remove("fade-in");
+
+  setTimeout(()=>{
+
+    if(type === "add"){
+      panel.innerHTML = `
+        <h2>Add Event</h2>
+        <p>Create a new wedding or party event.</p>
+        <a href="create-event.html" class="btn-primary">Create Event</a>
+    `;
+
+    }
+
+    if(type === "events"){
+      panel.innerHTML = `
+        <h2>My Events</h2>
+        <ul>
+          <li>Wedding - 12 March 2026</li>
+          <li>Birthday Party - 28 April 2026</li>
+        </ul>
+      `;
+    }
+
+    if(type === "nearby"){
+      panel.innerHTML = `
+        <h2>Nearby Wedding Halls</h2>
+        <p>Showing venues near your location...</p>
+      `;
+    }
+
+    if(type === "budget"){
+      panel.innerHTML = `
+        <h2>Budget Tracker</h2>
+        <p>Total Budget: ₹5,00,000</p>
+        <p>Spent: ₹2,75,000</p>
+        <p>Remaining: ₹2,25,000</p>
+      `;
+    }
+
+    panel.classList.add("fade-in");
+
+  },150);
+}
