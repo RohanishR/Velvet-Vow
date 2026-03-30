@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Velvet Vow</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<!-- Leaflet Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3>Select Login Type</h3>
+    <a href="customer-login.html" class="modal-btn">Customer Login</a>
+    <a href="manager-login.html" class="modal-btn">Event Manager Login</a>
+  </div>
+</div>
+
+<body>
+
+<nav class="navbar">
+  <div class="container nav-wrapper">
+    <h2 class="logo">The Velvet Vow</h2>
+
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <button onclick="openModal()" class="btn-primary small">Login</button>
+    </div>
+  </div>
+</nav>
+
+
+<!-- HERO -->
+<section class="hero container">
+    <h1>The Velvet Vow</h1>
+    <p class="subtitle">Plan Weddings, Parties & Corporate Events Effortlessly</p>
+
+    <div class="hero-buttons">
+        <button onclick="openModal()" class="btn-primary small">Get Started</button>
+    </div>
+
+    <div class="map-container">
+        <section class="map-section">
+    <div class="map-card">
+        <h3 class="map-title">Events near you</h3>
+        <div id="map"></div>
+        <div class="map-loader" id="mapLoader">
+            <div class="spinner"></div>
+            <p>Detecting your location...</p>
+        </div>
+    </div>
+</section>
+
+    </div>
+
+</div>
+
+
+</section>
+
+<!-- PARTNERS -->
+<section class="partners">
+  <p class="section-label">Our Most Trusted Partner</p>
+
+  <div class="logo-slider">
+    <div class="logo-track">
+      <span>The Wedding Design Company (WDC)</span>
+      <span>Shaadi Squad</span>
+      <span>Motwane Entertainment & Weddings</span>
+      <span>Wedniksha</span>
+      <span>Devika Narain & Company</span>
+
+      <!-- Duplicate for smooth infinite effect -->
+      <span>The Wedding Design Company (WDC)</span>
+      <span>Shaadi Squad</span>
+      <span>Motwane Entertainment & Weddings</span>
+      <span>Wedniksha</span>
+      <span>Devika Narain & Company</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- CUSTOMER -->
+<section class="two-column container">
+    <div class="text-block">
+        <h2>Customer</h2>
+        <p>Be our customer and arrange an event with confirmed discounts.</p>
+        <div class="button-group">
+        <a href="customer-login.html" class="btn-primary">Login</a>
+        <a href="customer-signup.html" class="btn-outline">Sign Up</a>
+</div>
+
+    </div>
+    <div class="image-container">
+    <img src="assets/wedding.avif" alt="Wedding Event">
+</div>
+
+</section>
+
+<!-- EVENT MANAGER -->
+<section class="two-column container">
+    <div class="image-container">
+    <img src="assets/wedding_2.jpg" alt="Wedding Event">
+</div>
+
+    <div class="text-block">
+        <h2>Event Manager</h2>
+        <p>Are you vendor? Get your customers through our site by joing with us.</p>
+        <div class="button-group">
+        <a href="manager-login.html" class="btn-primary">Login</a>
+        <a href="manager-signup.html" class="btn-outline">Sign Up</a>
+</div>
+
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+    <div class="container feature-wrapper">
+
+        <div class="feature-box">
+            <h3>Smart Event Planning</h3>
+            <p>Plan weddings, parties, and corporate events effortlessly in one place. From venue booking to vendor coordination, manage everything through a single, easy-to-use dashboard.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>Verified Vendors & Venues</h3>
+            <p>Discover trusted wedding halls, decorators, caterers, and photographers near you. Compare services, check availability, and book instantly with confidence.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>Budget & Real-Time Tracking</h3>
+            <p>Stay in control of your event expenses with smart budget tracking and live updates. Monitor bookings, payments, and schedules in real time.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<!-- FOOTER -->
+<footer>
+    <div class="container footer-wrapper">
+        <div class="footer-left">
+            <strong>The Velvet Vow</strong>
+            <a href="#">About</a>
+            <a href="#">Learn more</a>
+            <a href="#">Support</a>
+        </div>
+
+        <div class="footer-right">
+            <a href="https://instagram.com/rohanishraman" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+
+            <a href="https://linkedin.com/in/ramanrohanish" target="_blank">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+
+            <a href="https://twitter.com/rrohanish" target="_blank">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+
+<script src="js/script.js"></script>
+</body>
+</html>
