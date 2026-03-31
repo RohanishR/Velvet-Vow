@@ -6,12 +6,18 @@ import Modal from './Modal';
 
 const Layout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('login');
+
+  const openModal = (mode = 'login') => {
+      setModalMode(mode);
+      setIsModalOpen(true);
+  };
 
   return (
     <>
-      <Navbar onOpenModal={() => setIsModalOpen(true)} />
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      <Outlet />
+      <Navbar onOpenModal={() => openModal('login')} />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} mode={modalMode} />
+      <Outlet context={{ onOpenModal: (mode) => openModal(mode) }} />
       <Footer />
     </>
   );

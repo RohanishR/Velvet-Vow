@@ -52,11 +52,3 @@ CREATE TABLE IF NOT EXISTS Bookings (
     UNIQUE KEY unique_booking (venue_id, event_date)
 );
 
--- Dummy Venues Data logic template to test GPS:
--- NOTE: Please ensure the vendor_id '1' actually matches your registered Vendor account in the Users table!
--- INSERT INTO Venues (venue_id, vendor_id, city, name, location, latitude, longitude, price) VALUES 
--- (1, 1, 'Chennai', 'Leela Palace Banquet', 'Chennai', 13.0487, 80.2824, '300000'),
--- (2, 1, 'Chennai', 'ITC Grand Chola Hall', 'Chennai', 13.0100, 80.2200, '500000'),
--- (3, 1, 'Chennai', 'Green Meadows Resort', 'Chennai', 12.9500, 80.2500, '180000'),
--- (4, 1, 'Chennai', 'Sree Amruthaa Palace', 'Chennai', 13.0800, 80.2400, '120000'),
--- (5, 1, 'Chennai', 'Rajah Annamalai Hall', 'Chennai', 13.0900, 80.2700, '200000');

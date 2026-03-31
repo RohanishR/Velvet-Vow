@@ -63,3 +63,27 @@ exports.getMyEvents = async (req, res) => {
     res.status(500).json({ message: 'Server Error fetching events.' });
   }
 };
+
+// @route   DELETE /api/events/:id
+// @desc    Delete an event securely
+// @access  Private
+exports.deleteEvent = async (req, res) => {
+  try {
+    const event_id = req.params.id;
+    const customer_id = req.user.id;
+
+    const [result] = await db.execute(
+      'DELETE FROM Events WHERE event_id = ? AND customer_id = ?',
+      [event_id, customer_id]
+    );
+
+    if(result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Event not found or unauthorized.' });
+    }
+
+    res.status(200).json({ message: 'Event successfully deleted.' });
+  } catch (err) {
+    console.error('Error deleting event: ', err);
+    res.status(500).json({ message: 'Server error trying to delete event.' });
+  }
+};

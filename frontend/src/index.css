@@ -786,3 +786,17 @@ body{
 .success-modal.show{
   opacity:1;
 }
+
+/* ===== FOOTER ACCORDION ===== */
+.learn-more-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  background: #f9f9f9;
+  border-top: 1px solid transparent;
+  transition: all 0.4s ease-in-out;
+}
+
+.learn-more-dropdown.open {
+  max-height: 500px;
+  border-top: 1px solid #eaeaea;
+}

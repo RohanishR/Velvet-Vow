@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 
-const Home = ({ onOpenModal }) => {
+const Home = () => {
+  const { onOpenModal } = useOutletContext() || {};
   useEffect(() => {
     let map;
     let userMarker;
@@ -21,7 +22,7 @@ const Home = ({ onOpenModal }) => {
     const detectLocation = () => {
       if (!navigator.geolocation) {
         const loader = document.getElementById("mapLoader");
-        if(loader) loader.style.display = "none";
+        if (loader) loader.style.display = "none";
         return;
       }
 
@@ -50,9 +51,9 @@ const Home = ({ onOpenModal }) => {
 
     const addNearbyEvents = (lat, lon) => {
       const events = [
-        { name: "Wedding Hall", lat: lat + 0.01, lon: lon + 0.01 },
-        { name: "Birthday Venue", lat: lat - 0.008, lon: lon + 0.005 },
-        { name: "Corporate Event Space", lat: lat + 0.006, lon: lon - 0.01 }
+        { name: "The Leela Palace", lat: lat + 0.01, lon: lon + 0.01 },
+        { name: "Rajah Muthiah Hall", lat: lat - 0.008, lon: lon + 0.005 },
+        { name: "AVM Rajeswari Kalyana Mandapam", lat: lat + 0.006, lon: lon - 0.01 }
       ];
 
       events.forEach(event => {
@@ -94,7 +95,7 @@ const Home = ({ onOpenModal }) => {
         <p className="subtitle">Plan Weddings, Parties & Corporate Events Effortlessly</p>
 
         <div className="hero-buttons">
-          <button onClick={onOpenModal} className="btn-primary small">Get Started</button>
+          <button onClick={() => onOpenModal('signup')} className="btn-primary small">Get Started</button>
         </div>
 
         <div className="map-container">
@@ -134,7 +135,7 @@ const Home = ({ onOpenModal }) => {
       </section>
 
       {/* CUSTOMER */}
-      <section className="two-column container">
+      <section id="services" className="two-column container">
         <div className="text-block">
           <h2>Customer</h2>
           <p>Be our customer and arrange an event with confirmed discounts.</p>
@@ -165,7 +166,7 @@ const Home = ({ onOpenModal }) => {
       </section>
 
       {/* FEATURES */}
-      <section className="features">
+      <section id="about" className="features">
         <div className="container feature-wrapper">
           <div className="feature-box">
             <h3>Smart Event Planning</h3>

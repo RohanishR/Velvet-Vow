@@ -8,8 +8,7 @@ const Navbar = ({ onOpenModal }) => {
 
         <div className="nav-links">
           <Link to="/">Home</Link>
-          <Link to="/">About</Link>
-          <Link to="/">Services</Link>
+          <a href="/#about">About</a>
           <button onClick={onOpenModal} className="btn-primary small">Login</button>
         </div>
       </div>

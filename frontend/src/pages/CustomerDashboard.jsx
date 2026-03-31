@@ -137,6 +137,26 @@ const CustomerDashboard = () => {
     }
   };
 
+  const handleDeleteEvent = async (eventId) => {
+    if(!window.confirm("Are you sure you want to completely delete this event? This will also permanently cancel any associated venue bookings!")) return;
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if(res.ok) {
+        setEvents(events.filter(e => e.event_id !== eventId));
+        fetchDashboardData(); 
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Failed to delete event');
+      }
+    } catch(err) {
+      alert('Network error deleting event');
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -159,10 +179,13 @@ const CustomerDashboard = () => {
                       <h4 style={{ margin: '0 0 8px 0', fontSize: '18px' }}>Event Created: {evt.name}</h4>
                       <p style={{ margin: '0 0 5px 0', color: '#555' }}><strong>Date:</strong> {new Date(evt.event_date).toLocaleDateString()}</p>
                     </div>
-                    <div>
+                    <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                       <span style={{ padding: '6px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: 'bold', background: '#e2f0d9', color: '#385623' }}>
                         Active Plan
                       </span>
+                      <button onClick={() => handleDeleteEvent(evt.event_id)} className="btn-outline" style={{ border: '1px solid #ff4d4f', color: '#ff4d4f', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <i className="fas fa-trash"></i> Delete
+                      </button>
                     </div>
                   </div>
                 ))}
