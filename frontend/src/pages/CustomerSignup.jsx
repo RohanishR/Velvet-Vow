@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import MagneticButton from '../components/MagneticButton';
 
 const CustomerSignup = () => {
   const navigate = useNavigate();
@@ -69,9 +70,11 @@ const CustomerSignup = () => {
              <input type="password" placeholder="••••••••" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="form-input" />
           </div>
 
-          <button type="submit" className="btn-primary full">
-              <i className="fas fa-user-plus"></i> Create Account
-          </button>
+          <MagneticButton style={{ width: '100%' }}>
+            <button type="submit" className="btn-primary full">
+                <i className="fas fa-user-plus"></i> Create Account
+            </button>
+          </MagneticButton>
         </form>
         <p style={{ marginTop: '24px', color: 'var(--text-muted)' }}>
           Already have an account? <Link to="/customer-login" style={{ color: 'var(--primary-hover)', fontWeight: '600' }}>Log in</Link>

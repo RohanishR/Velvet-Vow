@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import MagneticButton from '../components/MagneticButton';
 
 const CustomerDashboard = () => {
   const [activeTab, setActiveTab] = useState('events');
@@ -223,9 +224,11 @@ const CustomerDashboard = () => {
                       <span style={{ padding: '6px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: 'bold', background: '#e2f0d9', color: '#385623' }}>
                         Active Plan
                       </span>
-                      <button onClick={() => handleDeleteEvent(evt.event_id)} className="btn-outline" style={{ border: '1px solid #ff4d4f', color: '#ff4d4f', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                        <i className="fas fa-trash"></i> Delete
-                      </button>
+                      <MagneticButton radius={60} strength={0.3}>
+                        <button onClick={() => handleDeleteEvent(evt.event_id)} className="btn-outline" style={{ border: '1px solid #ff4d4f', color: '#ff4d4f', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <i className="fas fa-trash"></i> Delete
+                        </button>
+                      </MagneticButton>
                     </div>
                   </div>
                 ))}
@@ -281,13 +284,17 @@ const CustomerDashboard = () => {
                       onChange={e => setCitySearch(e.target.value)}
                       style={{ padding: '8px 12px', border: '1px solid #ccc', borderRadius: '8px 0 0 8px' }}
                    />
-                   <button type="submit" className="btn-primary" style={{ borderRadius: '0 8px 8px 0', padding: '8px 15px' }}>
-                     <i className="fas fa-search"></i>
-                   </button>
+                   <MagneticButton radius={50} strength={0.25}>
+                     <button type="submit" className="btn-primary" style={{ borderRadius: '0 8px 8px 0', padding: '8px 15px' }}>
+                       <i className="fas fa-search"></i>
+                     </button>
+                   </MagneticButton>
                 </form>
-                <button onClick={handleGPSFetch} className="btn-primary" style={{ padding: '8px 15px', borderRadius: '8px', background: '#28a745' }}>
-                  <i className="fas fa-location-arrow"></i> Use GPS
-                </button>
+                <MagneticButton radius={60} strength={0.3}>
+                  <button onClick={handleGPSFetch} className="btn-primary" style={{ padding: '8px 15px', borderRadius: '8px', background: '#28a745' }}>
+                    <i className="fas fa-location-arrow"></i> Use GPS
+                  </button>
+                </MagneticButton>
               </div>
             </div>
 
@@ -310,9 +317,11 @@ const CustomerDashboard = () => {
                     </div>
                     <p><i className="fas fa-map-marker-alt" style={{marginRight: '6px', color: 'var(--primary)'}}></i> {hall.location}, {hall.city}</p>
                     <div className="venue-price">{hall.price}</div>
-                    <button onClick={() => openBookingModal(hall)} className="btn-primary" style={{ width: '100%', marginTop: 'auto' }}>
-                       Select & Book <i className="fas fa-arrow-right" style={{marginLeft: '6px'}}></i>
-                    </button>
+                    <MagneticButton style={{ width: '100%', marginTop: 'auto' }}>
+                      <button onClick={() => openBookingModal(hall)} className="btn-primary" style={{ width: '100%' }}>
+                         Select & Book <i className="fas fa-arrow-right" style={{marginLeft: '6px'}}></i>
+                      </button>
+                    </MagneticButton>
                   </div>
                 </div>
               ))}
@@ -341,8 +350,12 @@ const CustomerDashboard = () => {
                   </div>
 
                   <div style={{ display: 'flex', gap: '10px' }}>
-                    <button onClick={submitBooking} className="btn-primary" style={{ flex: 1 }}>Submit Request</button>
-                    <button onClick={() => setIsModalOpen(false)} className="btn-outline" style={{ flex: 1 }}>Cancel</button>
+                    <MagneticButton style={{ flex: 1 }}>
+                      <button onClick={submitBooking} className="btn-primary" style={{ width: '100%' }}>Submit Request</button>
+                    </MagneticButton>
+                    <MagneticButton style={{ flex: 1 }}>
+                      <button onClick={() => setIsModalOpen(false)} className="btn-outline" style={{ width: '100%' }}>Cancel</button>
+                    </MagneticButton>
                   </div>
                 </div>
               </div>
@@ -380,7 +393,9 @@ const CustomerDashboard = () => {
                 <label>New Password (Optional)</label>
                 <input type="password" placeholder="Leave blank to keep current password" value={editPassword} onChange={e => setEditPassword(e.target.value)} />
               </div>
-              <button type="submit" className="btn-primary" style={{ width: '100%' }}>Save Changes</button>
+              <MagneticButton style={{ width: '100%' }}>
+                <button type="submit" className="btn-primary" style={{ width: '100%' }}>Save Changes</button>
+              </MagneticButton>
             </form>
           </div>
         );
@@ -397,9 +412,11 @@ const CustomerDashboard = () => {
             <i className="fas fa-ring" style={{ color: 'var(--primary)' }}></i> Velvet Vow 
             <span style={{ fontSize: '14px', fontWeight: 'normal', color: 'var(--text-muted)' }}>| Customer Portal</span>
           </h2>
-          <button onClick={handleLogout} className="btn-outline">
-            <i className="fas fa-sign-out-alt"></i> Logout
-          </button>
+          <MagneticButton>
+            <button onClick={handleLogout} className="btn-outline">
+              <i className="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </MagneticButton>
         </div>
       </nav>
 
@@ -426,9 +443,11 @@ const CustomerDashboard = () => {
              
              <div style={{ borderTop: '1px solid var(--border)', margin: '16px 0' }}></div>
              
-             <Link to="/create-event" className="btn-primary" style={{ textAlign: 'center', margin: '0 16px', borderRadius: '8px' }}>
-                <i className="fas fa-plus"></i> New Event
-             </Link>
+             <MagneticButton>
+               <Link to="/create-event" className="btn-primary" style={{ textAlign: 'center', margin: '0 16px', borderRadius: '8px' }}>
+                  <i className="fas fa-plus"></i> New Event
+               </Link>
+             </MagneticButton>
           </div>
         </aside>
 

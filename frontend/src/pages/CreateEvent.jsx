@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import MagneticButton from '../components/MagneticButton';
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -190,7 +191,9 @@ const CreateEvent = () => {
             </select>
           </div>
 
-          <button type="submit" className="submit-btn"><i className="fas fa-check-circle"></i> Submit Event</button>
+          <MagneticButton style={{ width: '100%' }}>
+            <button type="submit" className="submit-btn"><i className="fas fa-check-circle"></i> Submit Event</button>
+          </MagneticButton>
         </form>
       </div>
 

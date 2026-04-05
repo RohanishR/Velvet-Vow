@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import MagneticButton from '../components/MagneticButton';
 
 const ManagerLogin = () => {
   const navigate = useNavigate();
@@ -69,9 +70,11 @@ const ManagerLogin = () => {
             />
           </div>
 
-          <button type="submit" className="btn-primary full">
-              <i className="fas fa-lock"></i> Access Dashboard
-          </button>
+          <MagneticButton style={{ width: '100%' }}>
+            <button type="submit" className="btn-primary full">
+                <i className="fas fa-lock"></i> Access Dashboard
+            </button>
+          </MagneticButton>
         </form>
         <p style={{ marginTop: '24px', color: 'var(--text-muted)' }}>
           Not a registered vendor? <Link to="/manager-signup" style={{ color: 'var(--primary-hover)', fontWeight: '600' }}>Apply Now</Link>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import MagneticButton from '../components/MagneticButton';
 
 const CustomerLogin = () => {
   const navigate = useNavigate();
@@ -69,9 +70,11 @@ const CustomerLogin = () => {
             />
           </div>
 
-          <button type="submit" className="btn-primary full">
-              <i className="fas fa-sign-in-alt"></i> Login Securely
-          </button>
+          <MagneticButton style={{ width: '100%' }}>
+            <button type="submit" className="btn-primary full">
+                <i className="fas fa-sign-in-alt"></i> Login Securely
+            </button>
+          </MagneticButton>
         </form>
         <p style={{ marginTop: '24px', color: 'var(--text-muted)' }}>
           Don't have an account? <Link to="/customer-signup" style={{ color: 'var(--primary-hover)', fontWeight: '600' }}>Create one</Link>

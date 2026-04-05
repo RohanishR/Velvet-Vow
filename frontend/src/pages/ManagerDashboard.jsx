@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import MagneticButton from '../components/MagneticButton';
 
 const ManagerDashboard = () => {
   const [activeTab, setActiveTab] = useState('requests');
@@ -129,8 +130,12 @@ const ManagerDashboard = () => {
                     </div>
                     <div>
                         <div style={{ display: 'flex', gap: '10px' }}>
-                          <button onClick={() => handleUpdateStatus(req.booking_id, 'Accepted')} className="btn-primary" style={{ padding: '8px 16px', borderRadius: '8px' }}>Accept</button>
-                          <button onClick={() => handleUpdateStatus(req.booking_id, 'Rejected')} className="btn-outline" style={{ padding: '8px 16px', borderRadius: '8px' }}>Reject</button>
+                          <MagneticButton radius={60} strength={0.3}>
+                            <button onClick={() => handleUpdateStatus(req.booking_id, 'Accepted')} className="btn-primary" style={{ padding: '8px 16px', borderRadius: '8px' }}>Accept</button>
+                          </MagneticButton>
+                          <MagneticButton radius={60} strength={0.3}>
+                            <button onClick={() => handleUpdateStatus(req.booking_id, 'Rejected')} className="btn-outline" style={{ padding: '8px 16px', borderRadius: '8px' }}>Reject</button>
+                          </MagneticButton>
                         </div>
                     </div>
                   </div>
@@ -246,7 +251,9 @@ const ManagerDashboard = () => {
                 <label>New Password (Optional)</label>
                 <input type="password" placeholder="Leave blank to keep current password" value={editPassword} onChange={e => setEditPassword(e.target.value)} />
               </div>
-              <button type="submit" className="btn-primary" style={{ width: '100%' }}>Save Changes</button>
+              <MagneticButton style={{ width: '100%' }}>
+                <button type="submit" className="btn-primary" style={{ width: '100%' }}>Save Changes</button>
+              </MagneticButton>
             </form>
           </div>
         );
@@ -263,9 +270,11 @@ const ManagerDashboard = () => {
             <i className="fas fa-ring" style={{ color: 'var(--primary)' }}></i> Velvet Vow 
             <span style={{ fontSize: '14px', fontWeight: 'normal', color: 'var(--text-muted)' }}>| Vendor Portal</span>
           </h2>
-          <button onClick={handleLogout} className="btn-outline">
-            <i className="fas fa-sign-out-alt"></i> Logout
-          </button>
+          <MagneticButton>
+            <button onClick={handleLogout} className="btn-outline">
+              <i className="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </MagneticButton>
         </div>
       </nav>
 
