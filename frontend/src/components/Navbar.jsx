@@ -4,12 +4,16 @@ const Navbar = ({ onOpenModal }) => {
   return (
     <nav className="navbar">
       <div className="container nav-wrapper">
-        <h2 className="logo">The Velvet Vow</h2>
+        <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <i></i> The Velvet Vow
+        </Link>
 
         <div className="nav-links">
-          <Link to="/">Home</Link>
-          <a href="/#about">About</a>
-          <button onClick={onOpenModal} className="btn-primary small">Login</button>
+          <Link to="/"><i className="fas fa-home" style={{marginRight: '6px'}}></i> Home</Link>
+          <a href="/#about"><i className="fas fa-info-circle" style={{marginRight: '6px'}}></i> About</a>
+          <button onClick={onOpenModal} className="btn-primary">
+            <i className="fas fa-user-circle"></i> Login Area
+          </button>
         </div>
       </div>
     </nav>

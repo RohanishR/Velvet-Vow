@@ -21,7 +21,13 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     const userStr = localStorage.getItem('user');
-    if (userStr) setUserName(JSON.parse(userStr).name);
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      setUserName(user.name);
+      setEditName(user.name);
+      setEditEmail(user.email);
+      setEditPhone(user.phone || '');
+    }
 
     fetchDashboardData();
     fetchVenues(); // Basic fetch on load
@@ -163,6 +169,40 @@ const CustomerDashboard = () => {
     navigate('/');
   };
 
+  // --- Profile State ---
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [editPassword, setEditPassword] = useState('');
+  const [profileMessage, setProfileMessage] = useState('');
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setProfileMessage('');
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5000/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: editName, email: editEmail, phone: editPhone, password: editPassword })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setProfileMessage('Profile updated successfully!');
+        setUserName(data.user.name);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setEditPassword('');
+      } else {
+        setProfileMessage(data.message || 'Update failed');
+      }
+    } catch (err) {
+      setProfileMessage('Network error updating profile');
+    }
+  };
+
   const renderContent = () => {
     switch(activeTab) {
       case 'events':
@@ -196,6 +236,16 @@ const CustomerDashboard = () => {
                         <h4 style={{ margin: '0 0 8px 0', fontSize: '18px' }}>Venue Connected: {booking.hallName}</h4>
                         <p style={{ margin: '0 0 5px 0', color: '#0056b3' }}>Linked Event: {booking.eventName}</p>
                         <p style={{ margin: '0 0 5px 0', color: '#555' }}><strong>Booking Date:</strong> {new Date(booking.eventDate).toLocaleDateString()}</p>
+                        
+                        {/* Bi-Directional Details Render if Accepted */}
+                        {booking.status === 'Accepted' && (
+                          <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(40, 167, 69, 0.1)', borderRadius: '8px', borderLeft: '4px solid #28a745' }}>
+                            <p style={{ margin: '0 0 4px 0', fontSize: '13px', color: '#155724' }}><strong>Vendor Name:</strong> {booking.vendorName}</p>
+                            <p style={{ margin: '0 0 4px 0', fontSize: '13px', color: '#155724' }}><strong>Contact Email:</strong> <a href={`mailto:${booking.vendorEmail}`} style={{color:'#155724'}}>{booking.vendorEmail}</a></p>
+                            {booking.vendorContact && <p style={{ margin: '0 0 4px 0', fontSize: '13px', color: '#155724' }}><strong>Phone:</strong> <a href={`tel:${booking.vendorContact}`} style={{color:'#155724'}}>{booking.vendorContact}</a></p>}
+                            <p style={{ margin: '0', fontSize: '13px', color: '#155724' }}><strong>Directions:</strong> {booking.venueLocation}</p>
+                          </div>
+                        )}
                         </div>
                         <div>
                             <span style={{ 
@@ -210,6 +260,7 @@ const CustomerDashboard = () => {
                             </span>
                         </div>
                     </div>
+
                 ))}
               </div>
             )}
@@ -243,18 +294,25 @@ const CustomerDashboard = () => {
             {availableHalls.length === 0 && <p style={{ color: '#d9534f', marginTop: '20px' }}>No venues found.</p>}
             <p style={{ marginBottom: '20px', marginTop:'20px' }}>Showing premium venues connecting you to top vendors...</p>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+            <div className="dashboard-grid">
               {availableHalls.map((hall) => (
-                <div key={hall.id} style={{ border: '1px solid #eaeaea', borderRadius: '15px', overflow: 'hidden', background: '#fff' }}>
-                  <img src={hall.image || '/assets/wedding.avif'} alt={hall.name} style={{ width: '100%', height: '180px', objectFit: 'cover' }} />
-                  <div style={{ padding: '20px' }}>
+                <div key={hall.id} className="venue-card">
+                  <img 
+                    src={hall.image && hall.image !== 'null' ? hall.image : '/assets/wedding.avif'} 
+                    alt={hall.name} 
+                    className="venue-image" 
+                    onError={(e) => { e.target.onerror = null; e.target.src = '/assets/wedding.avif'; }}
+                  />
+                  <div className="venue-details">
                     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
-                        <h3 style={{ margin: '0 0 10px 0', fontSize: '18px' }}>{hall.name}</h3>
+                        <h3>{hall.name}</h3>
                         {hall.distance && <span style={{fontSize:'12px', color:'#28a745', fontWeight:'bold'}}>{parseFloat(hall.distance).toFixed(1)} km</span>}
                     </div>
-                    <p style={{ margin: '0 0 5px 0', color: '#555' }}><i className="fas fa-map-marker-alt"></i> {hall.location}, {hall.city}</p>
-                    <p style={{ margin: '0 0 15px 0', fontWeight: 'bold' }}>{hall.price}</p>
-                    <button onClick={() => openBookingModal(hall)} className="btn-primary" style={{ width: '100%', padding: '10px' }}>Select & Book</button>
+                    <p><i className="fas fa-map-marker-alt" style={{marginRight: '6px', color: 'var(--primary)'}}></i> {hall.location}, {hall.city}</p>
+                    <div className="venue-price">{hall.price}</div>
+                    <button onClick={() => openBookingModal(hall)} className="btn-primary" style={{ width: '100%', marginTop: 'auto' }}>
+                       Select & Book <i className="fas fa-arrow-right" style={{marginLeft: '6px'}}></i>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -300,6 +358,32 @@ const CustomerDashboard = () => {
             <p>Remaining: ₹2,25,000</p>
           </>
         );
+      case 'profile':
+        return (
+          <div className="card" style={{ maxWidth: '600px', margin: '0 auto', padding: '30px' }}>
+            <h2 style={{ marginBottom: '20px' }}><i className="fas fa-user-edit"></i> Edit Profile</h2>
+            {profileMessage && <p style={{ padding: '10px', background: profileMessage.includes('success') ? '#d4edda' : '#f8d7da', color: profileMessage.includes('success') ? '#155724' : '#721c24', borderRadius: '5px', marginBottom: '15px' }}>{profileMessage}</p>}
+            <form onSubmit={handleProfileUpdate}>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input type="text" value={editName} onChange={e => setEditName(e.target.value)} required />
+              </div>
+              <div className="form-group">
+                <label>Email Address</label>
+                <input type="email" value={editEmail} onChange={e => setEditEmail(e.target.value)} required />
+              </div>
+              <div className="form-group">
+                <label>Phone Number (Optional)</label>
+                <input type="tel" value={editPhone} onChange={e => setEditPhone(e.target.value)} placeholder="+91 9876543210" />
+              </div>
+              <div className="form-group">
+                <label>New Password (Optional)</label>
+                <input type="password" placeholder="Leave blank to keep current password" value={editPassword} onChange={e => setEditPassword(e.target.value)} />
+              </div>
+              <button type="submit" className="btn-primary" style={{ width: '100%' }}>Save Changes</button>
+            </form>
+          </div>
+        );
       default:
         return null;
     }
@@ -307,56 +391,51 @@ const CustomerDashboard = () => {
 
   return (
     <>
-      <nav className="navbar">
-        <div className="container nav-wrapper">
-          <h2>Customer Dashboard</h2>
-          <button onClick={handleLogout} className="btn-outline small">Logout</button>
+      <nav className="navbar" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div className="container nav-wrapper" style={{ width: '95%', maxWidth: '1400px' }}>
+          <h2 className="logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <i className="fas fa-ring" style={{ color: 'var(--primary)' }}></i> Velvet Vow 
+            <span style={{ fontSize: '14px', fontWeight: 'normal', color: 'var(--text-muted)' }}>| Customer Portal</span>
+          </h2>
+          <button onClick={handleLogout} className="btn-outline">
+            <i className="fas fa-sign-out-alt"></i> Logout
+          </button>
         </div>
       </nav>
 
-      <section className="dashboard container">
-        <div style={{ marginBottom: '30px' }}>
-          <h1 style={{ fontSize: '28px', marginBottom: '5px' }}>Welcome back, {userName}! 👋</h1>
-          <p style={{ color: '#666' }}>Ready to plan your perfect event? Manage your bookings and discover new venues.</p>
-        </div>
-
-        <div className="dashboard-grid">
-          <div className="add-event-card">
-            <div className="add-event-text">
-              <h2>Add Event</h2>
-              <p>Start planning your wedding or celebration with smart tools and real-time tracking.</p>
-              <Link to="/create-event" className="create-btn">
-                <i className="fas fa-plus-circle"></i> Create Event
-              </Link>
-            </div>
-            <div className="add-event-icon">
-              <i className="fas fa-calendar-plus"></i>
-            </div>
+      <div className="dashboard-layout">
+        <aside className="sidebar">
+          <div className="sidebar-header">
+             <div style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', fontWeight: '700' }}>Welcome back</div>
+             <div className="sidebar-user">{userName}</div>
           </div>
-
-          <div className={`dash-card ${activeTab === 'events' ? 'active' : ''}`} onClick={() => setActiveTab('events')}>
-            <i className="fas fa-calendar-check"></i>
-            <h3>My Events & Bookings</h3>
-            <p>View and manage your bookings</p>
+          
+          <div className="sidebar-nav">
+             <button className={`nav-item ${activeTab === 'events' ? 'active' : ''}`} onClick={() => setActiveTab('events')}>
+                <i className="fas fa-calendar-check"></i> My Events
+             </button>
+             <button className={`nav-item ${activeTab === 'nearby' ? 'active' : ''}`} onClick={() => setActiveTab('nearby')}>
+                <i className="fas fa-search-location"></i> Search Venues
+             </button>
+             <button className={`nav-item ${activeTab === 'budget' ? 'active' : ''}`} onClick={() => setActiveTab('budget')}>
+                <i className="fas fa-wallet"></i> Budget Tracker
+             </button>
+             <button className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>
+                <i className="fas fa-user-cog"></i> Profile Settings
+             </button>
+             
+             <div style={{ borderTop: '1px solid var(--border)', margin: '16px 0' }}></div>
+             
+             <Link to="/create-event" className="btn-primary" style={{ textAlign: 'center', margin: '0 16px', borderRadius: '8px' }}>
+                <i className="fas fa-plus"></i> New Event
+             </Link>
           </div>
+        </aside>
 
-          <div className={`dash-card ${activeTab === 'nearby' ? 'active' : ''}`} onClick={() => setActiveTab('nearby')}>
-            <i className="fas fa-map-marker-alt"></i>
-            <h3>Nearby Wedding Halls</h3>
-            <p>Find premium venues near you</p>
-          </div>
-
-          <div className={`dash-card ${activeTab === 'budget' ? 'active' : ''}`} onClick={() => setActiveTab('budget')}>
-            <i className="fas fa-wallet"></i>
-            <h3>Budget Tracker</h3>
-            <p>Track your event expenses</p>
-          </div>
-        </div>
-
-        <div id="content-panel" className="content-panel fade-in" style={{ marginTop: '30px' }}>
+        <main className="dashboard-content">
           {renderContent()}
-        </div>
-      </section>
+        </main>
+      </div>
     </>
   );
 };

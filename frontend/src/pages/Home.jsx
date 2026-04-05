@@ -95,7 +95,9 @@ const Home = () => {
         <p className="subtitle">Plan Weddings, Parties & Corporate Events Effortlessly</p>
 
         <div className="hero-buttons">
-          <button onClick={() => onOpenModal('signup')} className="btn-primary small">Get Started</button>
+          <button onClick={() => onOpenModal('signup')} className="btn-primary">
+             Get Started <i className="fas fa-arrow-right" style={{marginLeft: '4px'}}></i>
+          </button>
         </div>
 
         <div className="map-container">
@@ -137,11 +139,11 @@ const Home = () => {
       {/* CUSTOMER */}
       <section id="services" className="two-column container">
         <div className="text-block">
-          <h2>Customer</h2>
-          <p>Be our customer and arrange an event with confirmed discounts.</p>
+          <h2>For Customers</h2>
+          <p>Be our customer and arrange an event with confirmed discounts. Browse hundreds of verified premium venues and seamlessly manage your personal bookings.</p>
           <div className="button-group">
-            <Link to="/customer-login" className="btn-primary">Login</Link>
-            <Link to="/customer-signup" className="btn-outline">Sign Up</Link>
+            <Link to="/customer-login" className="btn-primary"><i className="fas fa-sign-in-alt"></i> Login</Link>
+            <Link to="/customer-signup" className="btn-outline"><i className="fas fa-user-plus"></i> Sign Up</Link>
           </div>
         </div>
         <div className="image-container">
@@ -156,11 +158,11 @@ const Home = () => {
         </div>
 
         <div className="text-block">
-          <h2>Event Manager</h2>
-          <p>Are you vendor? Get your customers through our site by joing with us.</p>
+          <h2>For Event Managers</h2>
+          <p>Are you a premium vendor? Discover new customers through our platform and streamline your entire venue booking algorithm dynamically.</p>
           <div className="button-group">
-            <Link to="/manager-login" className="btn-primary">Login</Link>
-            <Link to="/manager-signup" className="btn-outline">Sign Up</Link>
+            <Link to="/manager-login" className="btn-primary"><i className="fas fa-sign-in-alt"></i> Login</Link>
+            <Link to="/manager-signup" className="btn-outline"><i className="fas fa-store"></i> Vendor Sign Up</Link>
           </div>
         </div>
       </section>
@@ -168,18 +170,18 @@ const Home = () => {
       {/* FEATURES */}
       <section id="about" className="features">
         <div className="container feature-wrapper">
-          <div className="feature-box">
-            <h3>Smart Event Planning</h3>
+          <div className="feature-box card">
+            <h3><i className="fas fa-calendar-check" style={{ color: 'var(--primary)', marginRight: '8px' }}></i> Smart Event Planning</h3>
             <p>Plan weddings, parties, and corporate events effortlessly in one place. From venue booking to vendor coordination, manage everything through a single, easy-to-use dashboard.</p>
           </div>
 
-          <div className="feature-box">
-            <h3>Verified Vendors & Venues</h3>
+          <div className="feature-box card">
+            <h3><i className="fas fa-map-marked-alt" style={{ color: 'var(--primary)', marginRight: '8px' }}></i> Verified Vendors</h3>
             <p>Discover trusted wedding halls, decorators, caterers, and photographers near you. Compare services, check availability, and book instantly with confidence.</p>
           </div>
 
-          <div className="feature-box">
-            <h3>Budget & Real-Time Tracking</h3>
+          <div className="feature-box card">
+            <h3><i className="fas fa-chart-line" style={{ color: 'var(--primary)', marginRight: '8px' }}></i> Real-Time Tracking</h3>
             <p>Stay in control of your event expenses with smart budget tracking and live updates. Monitor bookings, payments, and schedules in real time.</p>
           </div>
         </div>

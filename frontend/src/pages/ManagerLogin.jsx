@@ -42,25 +42,40 @@ const ManagerLogin = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-box">
-        <h2>Event Manager Login</h2>
-        <form onSubmit={handleLogin} style={{ width: '100%' }}>
-          {error && <p style={{ color: '#d9534f', fontSize: '13px', marginBottom: '10px', textAlign: 'left' }}>{error}</p>}
-          <input 
-            type="email" 
-            placeholder="Official Email" 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input 
-            type="password" 
-            placeholder="Password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit" className="btn-primary full">Login</button>
+      <div className="auth-box card">
+        <h2>Vendor Portal Login</h2>
+        <form onSubmit={handleLogin} style={{ width: '100%', textAlign: 'left' }}>
+          {error && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '16px', background: '#fee2e2', padding: '10px', borderRadius: '8px' }}>{error}</p>}
+          
+          <div className="form-group">
+            <label>Official Email</label>
+            <input 
+              type="email" 
+              placeholder="manager@venue.com" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Protected Password</label>
+            <input 
+              type="password" 
+              placeholder="••••••••" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form-input"
+            />
+          </div>
+
+          <button type="submit" className="btn-primary full">
+              <i className="fas fa-lock"></i> Access Dashboard
+          </button>
         </form>
-        <p>No account? <Link to="/manager-signup">Sign Up</Link></p>
+        <p style={{ marginTop: '24px', color: 'var(--text-muted)' }}>
+          Not a registered vendor? <Link to="/manager-signup" style={{ color: 'var(--primary-hover)', fontWeight: '600' }}>Apply Now</Link>
+        </p>
       </div>
     </div>
   );

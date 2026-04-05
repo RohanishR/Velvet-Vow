@@ -60,15 +60,18 @@ exports.getVendorBookings = async (req, res) => {
         b.status, 
         v.name AS hallName, 
         u.name AS customerName, 
+        u.email AS customerEmail,
+        COALESCE(u.phone, e.contact_number) AS customerContact,
         b.event_date AS eventDate,
         v.price AS venuePrice
       FROM Bookings b
       JOIN Events e ON b.event_id = e.event_id
       JOIN Users u ON e.customer_id = u.user_id
       JOIN Venues v ON b.venue_id = v.venue_id
+      WHERE v.vendor_id = ?
       ORDER BY b.created_at DESC
     `;
-    const [requests] = await db.execute(query);
+    const [requests] = await db.execute(query, [req.user.id]);
     res.status(200).json(requests);
   } catch (err) {
     console.error('Vendor generic fetch error:', err);
@@ -125,11 +128,16 @@ exports.getCustomerBookings = async (req, res) => {
                 b.booking_id as id,
                 e.name as eventName,
                 v.name as hallName,
+                v.location as venueLocation,
+                vu.name as vendorName,
+                vu.email as vendorEmail,
+                vu.phone as vendorContact,
                 b.event_date as eventDate,
                 b.status
             FROM Bookings b
             JOIN Events e ON b.event_id = e.event_id
             JOIN Venues v ON b.venue_id = v.venue_id
+            JOIN Users vu ON v.vendor_id = vu.user_id
             WHERE e.customer_id = ?
             ORDER BY b.created_at DESC
         `;

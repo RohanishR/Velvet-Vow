@@ -39,18 +39,43 @@ const CustomerSignup = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-box">
+      <div className="auth-box card">
         <h2>Create Customer Account</h2>
-        <form onSubmit={handleSignup} style={{ width: '100%' }}>
-          {error && <p style={{ color: '#d9534f', fontSize: '13px', marginBottom: '10px', textAlign: 'left' }}>{error}</p>}
-          <input type="text" placeholder="Full Name" value={name} onChange={e => setName(e.target.value)} />
-          <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-          <input type="tel" placeholder="Phone Number" value={phone} onChange={e => setPhone(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-          <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-          <button type="submit" className="btn-primary full">Sign Up</button>
+        <form onSubmit={handleSignup} style={{ width: '100%', textAlign: 'left' }}>
+          {error && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '16px', background: '#fee2e2', padding: '10px', borderRadius: '8px' }}>{error}</p>}
+          
+          <div className="form-group">
+             <label>Full Name</label>
+             <input type="text" placeholder="John Doe" value={name} onChange={e => setName(e.target.value)} className="form-input" />
+          </div>
+          
+          <div className="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="name@example.com" value={email} onChange={e => setEmail(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+1 (555) 000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+             <label>Confirm Password</label>
+             <input type="password" placeholder="••••••••" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="form-input" />
+          </div>
+
+          <button type="submit" className="btn-primary full">
+              <i className="fas fa-user-plus"></i> Create Account
+          </button>
         </form>
-        <p>Already have an account? <Link to="/customer-login">Login</Link></p>
+        <p style={{ marginTop: '24px', color: 'var(--text-muted)' }}>
+          Already have an account? <Link to="/customer-login" style={{ color: 'var(--primary-hover)', fontWeight: '600' }}>Log in</Link>
+        </p>
       </div>
     </div>
   );

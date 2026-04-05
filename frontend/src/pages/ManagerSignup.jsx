@@ -40,19 +40,48 @@ const ManagerSignup = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-box">
-        <h2>Create Event Manager Account</h2>
-        <form onSubmit={handleSignup} style={{ width: '100%' }}>
-          {error && <p style={{ color: '#d9534f', fontSize: '13px', marginBottom: '10px', textAlign: 'left' }}>{error}</p>}
-          <input type="text" placeholder="Company Name" value={company} onChange={e => setCompany(e.target.value)} />
-          <input type="text" placeholder="Manager Name" value={name} onChange={e => setName(e.target.value)} />
-          <input type="email" placeholder="Official Email" value={email} onChange={e => setEmail(e.target.value)} />
-          <input type="tel" placeholder="Contact Number" value={phone} onChange={e => setPhone(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-          <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-          <button type="submit" className="btn-primary full">Sign Up</button>
+      <div className="auth-box card">
+        <h2>Vendor Portal Registration</h2>
+        <form onSubmit={handleSignup} style={{ width: '100%', textAlign: 'left' }}>
+          {error && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '16px', background: '#fee2e2', padding: '10px', borderRadius: '8px' }}>{error}</p>}
+          
+          <div className="form-group">
+            <label>Vendor / Company Name</label>
+            <input type="text" placeholder="Leela Palace Inc." value={company} onChange={e => setCompany(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+            <label>Account Manager Name</label>
+            <input type="text" placeholder="Jane Doe" value={name} onChange={e => setName(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+            <label>Official Email</label>
+             <input type="email" placeholder="contact@venue.com" value={email} onChange={e => setEmail(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+            <label>Business Phone</label>
+            <input type="tel" placeholder="+1 (555) 000-0000" value={phone} onChange={e => setPhone(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+            <label>Secure Password</label>
+            <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} className="form-input" />
+          </div>
+
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input type="password" placeholder="••••••••" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="form-input" />
+          </div>
+
+          <button type="submit" className="btn-primary full">
+              <i className="fas fa-store"></i> Register Venue
+          </button>
         </form>
-        <p>Already registered? <Link to="/manager-login">Login</Link></p>
+        <p style={{ marginTop: '24px', color: 'var(--text-muted)' }}>
+          Already registered? <Link to="/manager-login" style={{ color: 'var(--primary-hover)', fontWeight: '600' }}>Log in</Link>
+        </p>
       </div>
     </div>
   );

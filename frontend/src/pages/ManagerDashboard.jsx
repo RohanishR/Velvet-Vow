@@ -13,7 +13,11 @@ const ManagerDashboard = () => {
     // Get vendor details from storage
     const userStr = localStorage.getItem('user');
     if (userStr) {
-      setVendorName(JSON.parse(userStr).name);
+      const user = JSON.parse(userStr);
+      setVendorName(user.name);
+      setEditName(user.name);
+      setEditEmail(user.email);
+      setEditPhone(user.phone || '');
     }
 
     const fetchRequests = async () => {
@@ -71,6 +75,40 @@ const ManagerDashboard = () => {
     navigate('/');
   };
 
+  // --- Profile State ---
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [editPassword, setEditPassword] = useState('');
+  const [profileMessage, setProfileMessage] = useState('');
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setProfileMessage('');
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5000/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: editName, email: editEmail, phone: editPhone, password: editPassword })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setProfileMessage('Profile updated successfully!');
+        setVendorName(data.user.name);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setEditPassword('');
+      } else {
+        setProfileMessage(data.message || 'Update failed');
+      }
+    } catch (err) {
+      setProfileMessage('Network error updating profile');
+    }
+  };
+
   const renderContent = () => {
     switch(activeTab) {
       case 'requests':
@@ -114,6 +152,10 @@ const ManagerDashboard = () => {
                     <div>
                       <h4 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#155724' }}>{req.hallName}</h4>
                       <p style={{ margin: '0 0 5px 0', color: '#333' }}><strong>Customer:</strong> {req.customerName}</p>
+                      <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(40, 167, 69, 0.1)', borderRadius: '8px', borderLeft: '4px solid #28a745' }}>
+                        <p style={{ margin: '0 0 4px 0', fontSize: '13px', color: '#155724' }}><strong>Phone:</strong> <a href={`tel:${req.customerContact}`} style={{color:'#155724'}}>{req.customerContact}</a></p>
+                        <p style={{ margin: '0', fontSize: '13px', color: '#155724' }}><strong>Email:</strong> <a href={`mailto:${req.customerEmail}`} style={{color:'#155724'}}>{req.customerEmail}</a></p>
+                      </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                         <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>{new Date(req.eventDate).toLocaleDateString()}</p>
@@ -170,7 +212,7 @@ const ManagerDashboard = () => {
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 13}} />
                                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 13}} tickFormatter={(value) => `₹${value/1000}k`} />
                                 <Tooltip cursor={{fill: '#f4f6f8'}} formatter={(value) => `₹${value.toLocaleString('en-IN')}`} contentStyle={{borderRadius: '10px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)'}} />
-                                <Bar dataKey="Revenue" fill="#ffc107" radius={[5, 5, 0, 0]} barSize={60} />
+                                <Bar dataKey="Revenue" fill="var(--primary)" radius={[4, 4, 0, 0]} barSize={50} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -182,6 +224,32 @@ const ManagerDashboard = () => {
             )}
           </>
         );
+      case 'profile':
+        return (
+          <div className="card" style={{ maxWidth: '600px', margin: '0 auto', padding: '30px' }}>
+            <h2 style={{ marginBottom: '20px' }}><i className="fas fa-user-edit"></i> Edit Profile</h2>
+            {profileMessage && <p style={{ padding: '10px', background: profileMessage.includes('success') ? '#d4edda' : '#f8d7da', color: profileMessage.includes('success') ? '#155724' : '#721c24', borderRadius: '5px', marginBottom: '15px' }}>{profileMessage}</p>}
+            <form onSubmit={handleProfileUpdate}>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input type="text" value={editName} onChange={e => setEditName(e.target.value)} required />
+              </div>
+              <div className="form-group">
+                <label>Email Address</label>
+                <input type="email" value={editEmail} onChange={e => setEditEmail(e.target.value)} required />
+              </div>
+              <div className="form-group">
+                <label>Phone Number (Optional)</label>
+                <input type="tel" value={editPhone} onChange={e => setEditPhone(e.target.value)} placeholder="+91 9876543210" />
+              </div>
+              <div className="form-group">
+                <label>New Password (Optional)</label>
+                <input type="password" placeholder="Leave blank to keep current password" value={editPassword} onChange={e => setEditPassword(e.target.value)} />
+              </div>
+              <button type="submit" className="btn-primary" style={{ width: '100%' }}>Save Changes</button>
+            </form>
+          </div>
+        );
       default:
         return null;
     }
@@ -189,43 +257,48 @@ const ManagerDashboard = () => {
 
   return (
     <>
-      <nav className="navbar">
-        <div className="container nav-wrapper">
-          <h2>Event Manager Dashboard</h2>
-          <button onClick={handleLogout} className="btn-outline small">Logout</button>
+      <nav className="navbar" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div className="container nav-wrapper" style={{ width: '95%', maxWidth: '1400px' }}>
+          <h2 className="logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <i className="fas fa-ring" style={{ color: 'var(--primary)' }}></i> Velvet Vow 
+            <span style={{ fontSize: '14px', fontWeight: 'normal', color: 'var(--text-muted)' }}>| Vendor Portal</span>
+          </h2>
+          <button onClick={handleLogout} className="btn-outline">
+            <i className="fas fa-sign-out-alt"></i> Logout
+          </button>
         </div>
       </nav>
 
-      <section className="dashboard container">
-        <div style={{ marginBottom: '30px' }}>
-          <h1 style={{ fontSize: '28px', marginBottom: '5px' }}>Welcome back, {vendorName}! 💼</h1>
-          <p style={{ color: '#666' }}>Review booking requests, track schedules, and manage your revenue.</p>
-        </div>
-
-        <div className="dashboard-cards">
-          <div className={`dash-card ${activeTab === 'requests' ? 'active' : ''}`} onClick={() => setActiveTab('requests')}>
-            <i className="fas fa-users"></i>
-            <h3>Customer Requests</h3>
-            <p>Manage event bookings</p>
+      <div className="dashboard-layout">
+        <aside className="sidebar">
+          <div className="sidebar-header">
+             <div style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', fontWeight: '700' }}>Venue Manager</div>
+             <div className="sidebar-user">{vendorName}</div>
           </div>
+          
+          <div className="sidebar-nav">
+             <button className={`nav-item ${activeTab === 'requests' ? 'active' : ''}`} onClick={() => setActiveTab('requests')}>
+                <i className="fas fa-users"></i> Booking Requests
+             </button>
+             <button className={`nav-item ${activeTab === 'events' ? 'active' : ''}`} onClick={() => setActiveTab('events')}>
+                <i className="fas fa-calendar-alt"></i> Scheduled Events
+             </button>
+             <button className={`nav-item ${activeTab === 'revenue' ? 'active' : ''}`} onClick={() => setActiveTab('revenue')}>
+                <i className="fas fa-chart-line"></i> Revenue Dash
+             </button>
+             
+             <div style={{ borderTop: '1px solid var(--border)', margin: '16px 0' }}></div>
 
-          <div className={`dash-card ${activeTab === 'events' ? 'active' : ''}`} onClick={() => setActiveTab('events')}>
-            <i className="fas fa-calendar-alt"></i>
-            <h3>Scheduled Events</h3>
-            <p>Upcoming confirmed events</p>
+             <button className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>
+                <i className="fas fa-user-cog"></i> Profile Settings
+             </button>
           </div>
+        </aside>
 
-          <div className={`dash-card ${activeTab === 'revenue' ? 'active' : ''}`} onClick={() => setActiveTab('revenue')}>
-            <i className="fas fa-chart-line"></i>
-            <h3>Revenue Overview</h3>
-            <p>Track business performance</p>
-          </div>
-        </div>
-
-        <div id="content-panel" className="content-panel fade-in" style={{ marginTop: '30px' }}>
+        <main className="dashboard-content">
           {renderContent()}
-        </div>
-      </section>
+        </main>
+      </div>
     </>
   );
 };
